@@ -1,0 +1,45 @@
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "oleg_orlov_2005@mail.ru",
+  "password": "izvara32",
+  "fullName": "Oleg",
+  "age": 20
+}
+
+###
+
+POST http://localhost:3000/api/auth/confirm-email HTTP/1.1
+Content-Type: application/json
+
+{
+  "token": "e73224f471162db6012cddb7f8c4317fb6e135f0dbb16284a522e59f1bf21615"
+}
+
+###
+
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "oleg_orlov_2005@mail.ru",
+  "password": "izvara32"
+}
+
+
+###
+
+GET http://localhost:3000/api/auth/refresh HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/auth/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4M2FmOGQxZi01NjJkLTQyY2YtYWYzMC05YjU1YWQ5ZjJhZDkiLCJlbWFpbCI6Im9sZWdfb3Jsb3ZfMjAwNUBtYWlsLnJ1IiwiZXhwIjoxNzYxNTc3MDEzMzU1LCJ0b2tlblZlcnNpb24iOjEsImlhdCI6MTc2MTU3NzAxM30.G-697oWSzKlz5Z89fCfP9CJTTHBvxn_n4a6Yfadq1II
+
+
+###
+
+GET http://localhost:3000/api/auth/exit HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4M2FmOGQxZi01NjJkLTQyY2YtYWYzMC05YjU1YWQ5ZjJhZDkiLCJlbWFpbCI6Im9sZWdfb3Jsb3ZfMjAwNUBtYWlsLnJ1IiwiZXhwIjoxNzYxNTc3MDEzMzU1LCJ0b2tlblZlcnNpb24iOjEsImlhdCI6MTc2MTU3NzAxM30.G-697oWSzKlz5Z89fCfP9CJTTHBvxn_n4a6Yfadq1II
+

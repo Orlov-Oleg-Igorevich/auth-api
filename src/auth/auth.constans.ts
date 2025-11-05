@@ -1,0 +1,10 @@
+export const USER_NOT_FOUND_ERROR = 'Пользователь не найден';
+export const USER_DELETED_ERROR = 'Пользователя больше не существует в бд';
+export const TOKEN_EXPIRED_ERROR = 'Пользователь не найден';
+export const TOKEN_UNCORRECTED_VERSION_ERROR = 'Версия токена устарела';
+export const TOKEN_NOT_FOUND_ERROR = 'Refresh токен не найден';
+export const TOKEN_BLOCKLIST_ERROR = 'Jwt токен пользователя находится в черном списке';
+export const ALREADY_REGISTERED_ERROR = 'Такой пользователь уже существует';
+export const TOKEN_INVALID_ERROR = 'Токен истёк или является невалидным';
+export const WRONG_PASSWORD_ERROR = 'Неверный пароль пользователя';
+export const USER_SIGN_INVALID_ERROR = 'Неверный пароль пользователя';
