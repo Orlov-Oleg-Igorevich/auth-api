@@ -21,7 +21,7 @@ export class EmailService {
   }
 
   async sendEmailConfirmation(email: string, token: string): Promise<void> {
-    const confirmLink = `${this.configService.frontendUrl}/confirm-email?token=${token}`;
+    const confirmLink = `${this.configService.frontendUrl}auth/confirm-email?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
