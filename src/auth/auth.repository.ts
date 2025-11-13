@@ -14,14 +14,6 @@ export class AuthRepository {
     private readonly redisCommonService: RedisCommonService,
   ) {}
 
-  async findUserById(id: string): Promise<UserModel | null> {
-    return this.prismaService.getClient().userModel.findUnique({ where: { id } });
-  }
-
-  async findUserByEmail(email: string): Promise<UserModel | null> {
-    return this.prismaService.getClient().userModel.findUnique({ where: { email } });
-  }
-
   async create(dto: CreateUserObject): Promise<UserModel> {
     return this.prismaService.getClient().userModel.create({ data: dto });
   }

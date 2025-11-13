@@ -8,6 +8,8 @@ import { TypedConfigService } from 'src/typed-config/typed-config.service';
 import { JwtModule } from '@nestjs/jwt';
 import { getJWTconfig } from 'src/config/jwt.config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UserModule } from 'src/user/user.module';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       inject: [TypedConfigService],
       useFactory: getJWTconfig,
     }),
+    UserModule,
   ],
   providers: [AuthService, AuthRepository, JwtStrategy],
   controllers: [AuthController],

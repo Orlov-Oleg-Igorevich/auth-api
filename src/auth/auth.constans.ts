@@ -7,4 +7,5 @@ export const TOKEN_BLOCKLIST_ERROR = 'Jwt токен пользователя н
 export const ALREADY_REGISTERED_ERROR = 'Такой пользователь уже существует';
 export const TOKEN_INVALID_ERROR = 'Токен истёк или является невалидным';
 export const WRONG_PASSWORD_ERROR = 'Неверный пароль пользователя';
-export const USER_SIGN_INVALID_ERROR = 'Неверный пароль пользователя';
+export const USER_SIGN_INVALID_ERROR = 'Подпись Refresh токена не валидна';
+export const USER_EMAIL_NOT_VERIFIED_ERROR = 'Почта пользователя не подтверждена';

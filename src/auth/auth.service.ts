@@ -13,6 +13,7 @@ import {
   TOKEN_INVALID_ERROR,
   TOKEN_UNCORRECTED_VERSION_ERROR,
   USER_DELETED_ERROR,
+  USER_EMAIL_NOT_VERIFIED_ERROR,
   USER_NOT_FOUND_ERROR,
   USER_SIGN_INVALID_ERROR,
   WRONG_PASSWORD_ERROR,
@@ -22,6 +23,7 @@ import { RefreshView } from 'src/redis/view/refresh.view';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from './responses/login.response';
 import { UserModel } from '@prisma/client';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -30,15 +32,8 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly redisService: RedisService,
     private readonly jwtService: JwtService,
+    private readonly userService: UserService,
   ) {}
-
-  async getUserById(id: string): Promise<UserModel | null> {
-    return this.authRepository.findUserById(id);
-  }
-
-  async getUserByEmail(email: string): Promise<UserModel | null> {
-    return this.authRepository.findUserByEmail(email);
-  }
 
   async createUser(dto: RegisterDto): Promise<void> {
     const salt = await genSalt(10);
@@ -93,13 +88,16 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<{ email: string; id: string; tokenVersion: number }> {
-    const user = await this.authRepository.findUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     if (!user) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
     const passwordIsTrue = await compare(password, user.hashedPassword);
     if (!passwordIsTrue) {
       throw new UnauthorizedException(WRONG_PASSWORD_ERROR);
+    }
+    if (!user.isEmailVerified) {
+      throw new UnauthorizedException(USER_EMAIL_NOT_VERIFIED_ERROR);
     }
     return { email: user.email, id: user.id, tokenVersion: user.tokenVersion };
   }
@@ -124,7 +122,7 @@ export class AuthService {
       throw new BadRequestException(USER_SIGN_INVALID_ERROR);
     }
 
-    const user = await this.getUserById(refreshTokenParseData.userId);
+    const user = await this.userService.getUserById(refreshTokenParseData.userId);
     if (!user) {
       throw new NotFoundException(USER_DELETED_ERROR);
     }

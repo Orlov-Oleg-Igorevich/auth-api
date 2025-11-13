@@ -4,9 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
-  NotFoundException,
   Post,
-  Query,
   Req,
   Res,
   UnauthorizedException,
@@ -15,24 +13,23 @@ import {
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
-import {
-  ALREADY_REGISTERED_ERROR,
-  TOKEN_NOT_FOUND_ERROR,
-  USER_DELETED_ERROR,
-} from './auth.constans';
+import { ALREADY_REGISTERED_ERROR, TOKEN_NOT_FOUND_ERROR } from './auth.constans';
 import { ConfirmEmailDto } from './dto/confirm-email.dto';
 import type { Response, Request } from 'express';
 import { LoginResponse } from './responses/login.response';
-import { UserModel } from '@prisma/client';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('register')
   async register(@Body() dto: RegisterDto): Promise<void> {
-    const oldUser = await this.authService.getUserByEmail(dto.email);
+    const oldUser = await this.userService.getUserByEmail(dto.email);
     if (oldUser) {
       throw new BadRequestException(ALREADY_REGISTERED_ERROR);
     }
@@ -89,12 +86,6 @@ export class AuthController {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return this.authService.login(user.id, user.email, user.tokenVersion);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async getUser(@Req() req: Request): Promise<UserModel | null> {
-    return this.authService.getUserByEmail(req.user.email);
   }
 
   @UseGuards(JwtAuthGuard)

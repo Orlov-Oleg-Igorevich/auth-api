@@ -10,12 +10,14 @@ import {
   USER_NOT_FOUND_ERROR,
 } from '../auth.constans';
 import { type Request } from 'express';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly configService: TypedConfigService,
     private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -31,7 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException(TOKEN_BLOCKLIST_ERROR);
     }
 
-    const user = await this.authService.getUserById(payload.sub);
+    const user = await this.userService.getUserById(payload.sub);
 
     if (!user) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
